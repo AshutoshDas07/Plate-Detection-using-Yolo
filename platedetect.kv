@@ -1,0 +1,84 @@
+#:kivy 1.1.0
+
+Root:
+    BoxLayout:
+        input_image: input_image
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: None
+            height: 45
+            Button:
+                text: 'Load'
+                on_release: root.show_load()
+            Button:
+                text: 'Predict'
+                on_release: root.save()
+            Button:
+                text: 'Database State'
+                on_release: root.showdb()
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Image:
+                id: input_image
+                source: ""
+            BoxLayout:
+                orientation: 'vertical'
+                Image:
+                    id: output_image
+                    source: ""
+            
+                Label:
+                    id: plate_number
+                    size_hint: 0.5, 0.45
+                    font_size: '20sp'
+                    text: "     PLATE NUMBER:"
+                    text_size: self.size
+                    halign: "right"
+                    valign: "center"
+
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
+
+<LoadDB>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        
+        ScrollView:
+            Label:
+                id: dbdisplay
+                size_hint: None, None
+                size: self.texture_size
+                text: root.get_text()
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Scrapped Database"
+                on_release: root.get_db_text()
+            Button:
+                text: "Predicated Database"
+                on_release: root.get_db_text(tested_text=True)
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
